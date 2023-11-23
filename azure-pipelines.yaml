@@ -17,8 +17,8 @@ stages:
         displayName: 'Build Docker Image Job'
         steps:
           - script: |
-              docker image build -t $(dockerImage):latest ./src/
-              docker image push $(dockerImage):latest
+              docker image build -t $(dockerImage):$(Build.BuildId) ./src/
+              docker image push $(dockerImage):$(Build.BuildId)
       - job: terraform
         displayName: 'Ensure infra is created'
         steps:
@@ -31,6 +31,9 @@ stages:
         steps:
           - script: |
               kubectl apply -f deploy/k8s
+              kubectl set image   deploy/nginx-deployment nginx-deployment=$(dockerImage):$(Build.BuildId) -n workshop
+              
+
 
 
 
