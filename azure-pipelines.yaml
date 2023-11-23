@@ -3,7 +3,35 @@
 # will pass paramters
 
 trigger:
-  - main
+  - dev
 
+pool: default
 variables:
   dockerImage: shaikkhajaibrahim/azuredevopsnov23
+
+stages:
+  - stage: buildndeploy
+    displayName: 'Build and deploy'
+    jobs:
+      - job: build
+        displayName: 'Build Docker Image Job'
+        steps:
+          - script: |
+              docker image build -t $(dockerImage):latest ./src/
+              docker image push $(dockerImage):latest
+      - job: terraform
+        displayName: 'Ensure infra is created'
+        steps:
+          - script: |
+              cd deploy/tf_azure
+              terraform init
+              terraform apply -auto-approve
+      - job: kubernetes
+        displayName: 'Kubernetes deploy'
+        steps:
+          - script: |
+              kubectl apply -f k8s/deploy
+
+
+
+      
