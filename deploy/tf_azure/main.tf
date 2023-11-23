@@ -22,4 +22,5 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
 output "kube_config" {
   value = azurerm_kubernetes_cluster.aks_cluster.kube_admin_config_raw
+  sensitive = true
 }
