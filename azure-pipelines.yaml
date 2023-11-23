@@ -30,7 +30,7 @@ stages:
         displayName: 'Kubernetes deploy'
         steps:
           - script: |
-              kubectl apply -f k8s/deploy
+              kubectl apply -f deploy/k8s
 
 
 
