@@ -3,3 +3,39 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: workshop
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: workshop
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: web
+        image: shaikkhajaibrahim/azuredevopsnov23:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
