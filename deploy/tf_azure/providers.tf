@@ -8,7 +8,7 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "agent"
     storage_account_name = "qtstate"
-    container_name       = "tfstate"
+    container_name       = "tfstates"
     key                  = "demo.terraform.tfstate"
     
   }
